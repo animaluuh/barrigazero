@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Protocolo Barriga Zero em 7 Dias</title>
+  <meta name="description" content="Página de vendas profissional para o produto digital Protocolo Barriga Zero em 7 Dias." />
+  <style>
+    :root {
+      --bg: #07110d;
+      --bg-soft: #0c1713;
+      --card: rgba(255,255,255,0.06);
+      --card-strong: rgba(255,255,255,0.1);
+      --text: #eef7f1;
+      --muted: #b9c8bf;
+      --line: rgba(255,255,255,0.12);
+      --primary: #5cf2a1;
+      --primary-dark: #23c978;
+      --accent: #d8ffe9;
+      --danger: #ff8b8b;
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+      --radius: 24px;
+      --radius-sm: 16px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(92,242,161,.15), transparent 30%),
+        radial-gradient(circle at 90% 20%, rgba(92,242,161,.08), transparent 25%),
+        linear-gradient(180deg, #08130f 0%, #07110d 45%, #091611 100%);
+      color: var(--text);
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+    }
+
+    .grid {
+      display: grid;
+      gap: 24px;
+    }
+
+    .hero {
+      position: relative;
+      padding: 28px 0 70px;
+      overflow: clip;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 0 26px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), #b7ffd8);
+      box-shadow: 0 10px 30px rgba(92,242,161,.28);
+      position: relative;
+    }
+
+    .brand-mark::before,
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      inset: 10px;
+      border: 2px solid rgba(7,17,13,.7);
+      border-radius: 999px;
+    }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font-weight: 700;
+      transition: .25s ease;
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-cta:hover { transform: translateY(-2px); border-color: rgba(92,242,161,.35); }
+
+    .hero-wrap {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(92,242,161,.08);
+      border: 1px solid rgba(92,242,161,.18);
+      color: #d4ffe8;
+      font-size: .95rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: var(--primary);
+      box-shadow: 0 0 18px rgba(92,242,161,.8);
+      animation: pulse 1.8s infinite;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.2rem, 5vw, 4.6rem);
+      line-height: .98;
+      letter-spacing: -.05em;
+      max-width: 11ch;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #ffffff, #b9ffd8 46%, #5cf2a1 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .lead {
+      margin: 18px 0 24px;
+      max-width: 60ch;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.4vw, 1.15rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      min-height: 56px;
+      padding: 0 24px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-weight: 800;
+      letter-spacing: -.01em;
+      transition: transform .22s ease, box-shadow .22s ease, background .22s ease;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #9dffca);
+      color: #052013;
+      box-shadow: 0 18px 40px rgba(92,242,161,.26);
+    }
+
+    .btn-primary:hover { transform: translateY(-3px); }
+
+    .btn-ghost {
+      background: rgba(255,255,255,.05);
+      border-color: var(--line);
+      color: var(--text);
+      backdrop-filter: blur(12px);
+    }
+
+    .micro-proof {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: var(--muted);
+      font-size: .96rem;
+    }
+
+    .micro-proof span {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--line);
+    }
+
+    .hero-card {
+      position: relative;
+      padding: 26px;
+      border-radius: 30px;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border: 1px solid rgba(255,255,255,.13);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      isolation: isolate;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(92,242,161,.65), rgba(255,255,255,.06), rgba(92,242,161,.18));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+      z-index: -1;
+    }
+
+    .device {
+      border-radius: 26px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.16);
+      background: #fff;
+      color: #112018;
+      box-shadow: 0 18px 50px rgba(0,0,0,.25);
+    }
+
+    .device-top {
+      background: #f3f6f4;
+      padding: 14px 16px;
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid #e1e7e3;
+    }
+
+    .device-top span {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #d6ddd8;
+    }
+
+    .device-body { padding: 18px; }
+
+    .fake-badge {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #effaf3;
+      color: #177c48;
+      font-weight: 800;
+      font-size: .85rem;
+      margin-bottom: 14px;
+    }
+
+    .fake-h {
+      font-size: 1.65rem;
+      line-height: 1.05;
+      font-weight: 900;
+      letter-spacing: -.04em;
+      margin: 0 0 10px;
+    }
+
+    .fake-p {
+      color: #52675a;
+      margin: 0 0 16px;
+      font-size: .98rem;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .stat {
+      background: #f6faf7;
+      border: 1px solid #e6efe9;
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.2rem;
+      letter-spacing: -.03em;
+    }
+
+    .price-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      background: #0f2017;
+      color: white;
+      border-radius: 20px;
+      margin-top: 14px;
+    }
+
+    .price-box .old {
+      color: rgba(255,255,255,.6);
+      text-decoration: line-through;
+      font-size: .92rem;
+    }
+
+    .price-box .new {
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: -.04em;
+    }
+
+    .section {
+      padding: 76px 0;
+      position: relative;
+    }
+
+    .section-title {
+      max-width: 780px;
+      margin-bottom: 30px;
+    }
+
+    .section-title h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.8rem, 3vw, 3rem);
+      line-height: 1;
+      letter-spacing: -.045em;
+    }
+
+    .section-title p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .pain-grid,
+    .benefits-grid,
+    .bonus-grid,
+    .steps-grid,
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      padding: 24px;
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.035));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      font-size: 1.2rem;
+      margin-bottom: 14px;
+      background: rgba(92,242,161,.12);
+      border: 1px solid rgba(92,242,161,.18);
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 1.22rem;
+      letter-spacing: -.03em;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .list {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .list-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--line);
+    }
+
+    .check {
+      width: 24px;
+      height: 24px;
+      flex: 0 0 24px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: rgba(92,242,161,.15);
+      color: var(--primary);
+      font-weight: 900;
+      margin-top: 2px;
+    }
+
+    .offer {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .offer::after {
+      content: "";
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      right: -120px;
+      top: -120px;
+      background: radial-gradient(circle, rgba(92,242,161,.18), transparent 65%);
+      pointer-events: none;
+    }
+
+    .price-panel {
+      padding: 28px;
+      border-radius: 28px;
+      background: linear-gradient(180deg, rgba(92,242,161,.12), rgba(255,255,255,.04));
+      border: 1px solid rgba(92,242,161,.24);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 24px;
+    }
+
+    .price-panel .tag {
+      display: inline-flex;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(92,242,161,.14);
+      color: #d9ffeb;
+      border: 1px solid rgba(92,242,161,.22);
+      font-size: .88rem;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .price-panel h3 {
+      margin: 0 0 12px;
+      font-size: 1.6rem;
+      letter-spacing: -.03em;
+    }
+
+    .price-panel p {
+      color: var(--muted);
+      margin: 0 0 16px;
+    }
+
+    .price {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin: 10px 0 18px;
+    }
+
+    .price .from {
+      color: rgba(255,255,255,.58);
+      text-decoration: line-through;
+      font-size: 1rem;
+    }
+
+    .price .to {
+      font-size: clamp(2.4rem, 4vw, 3.6rem);
+      line-height: .9;
+      font-weight: 900;
+      letter-spacing: -.06em;
+      color: white;
+    }
+
+    .mini {
+      font-size: .93rem;
+      color: var(--muted);
+    }
+
+    .seal {
+      margin-top: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: .96rem;
+    }
+
+    .seal::before {
+      content: "✓";
+      width: 26px;
+      height: 26px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: rgba(92,242,161,.15);
+      color: var(--primary);
+    }
+
+    .faq {
+      display: grid;
+      gap: 14px;
+    }
+
+    details {
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.045);
+      overflow: hidden;
+    }
+
+    summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 20px 22px;
+      font-weight: 800;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+
+    details p {
+      margin: 0;
+      padding: 0 22px 20px;
+      color: var(--muted);
+    }
+
+    .sticky-bar {
+      position: fixed;
+      left: 16px;
+      right: 16px;
+      bottom: 14px;
+      z-index: 50;
+      transform: translateY(120%);
+      transition: transform .35s ease;
+    }
+
+    .sticky-bar.show { transform: translateY(0); }
+
+    .sticky-inner {
+      width: min(920px, calc(100% - 0px));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 16px;
+      background: rgba(10,18,14,.85);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0,0,0,.35);
+    }
+
+    .sticky-copy strong {
+      display: block;
+      font-size: 1rem;
+      letter-spacing: -.02em;
+    }
+
+    .sticky-copy span {
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    footer {
+      padding: 36px 0 110px;
+      color: #9fb0a5;
+      font-size: .92rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px) scale(.985);
+      transition: opacity .7s ease, transform .7s ease;
+      will-change: transform, opacity;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.18); opacity: .75; }
+    }
+
+    @media (max-width: 980px) {
+      .hero-wrap,
+      .split,
+      .pain-grid,
+      .benefits-grid,
+      .bonus-grid,
+      .steps-grid,
+      .trust-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .price-panel { position: static; }
+      h1 { max-width: 100%; }
+      .stat-row { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding-bottom: 54px; }
+      .section { padding: 58px 0; }
+      .btn { width: 100%; }
+      .hero-actions { flex-direction: column; }
+      .sticky-inner { flex-direction: column; align-items: stretch; }
+      .sticky-inner .btn { width: 100%; }
+      .nav { padding-bottom: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <nav class="nav reveal">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true"></div>
+          <div>
+            <div>Protocolo Barriga Zero</div>
+            <small style="color: var(--muted); font-weight: 600;">Método digital • acesso imediato</small>
+          </div>
+        </div>
+        <a href="#oferta" class="nav-cta">Quero começar agora</a>
+      </nav>
+
+      <div class="hero-wrap">
+        <div class="reveal">
+          <div class="eyebrow"><span class="dot"></span> Método simples para reduzir inchaço e recuperar leveza</div>
+          <h1>Sua barriga pode estar <span class="gradient-text">inchada</span>, não necessariamente com gordura acumulada.</h1>
+          <p class="lead">Descubra um plano direto, fácil de aplicar e criado para quem quer melhorar a alimentação, reduzir o estufamento abdominal e começar a perceber diferença no espelho sem entrar em dietas malucas.</p>
+
+          <div class="hero-actions">
+            <a href="#oferta" class="btn btn-primary">Quero acessar por R$ 14,90</a>
+            <a href="#conteudo" class="btn btn-ghost">Ver o que vou receber</a>
+          </div>
+
+          <div class="micro-proof">
+            <span>✔ Acesso digital imediato</span>
+            <span>✔ Leitura simples e prática</span>
+            <span>✔ Garantia de 7 dias</span>
+          </div>
+        </div>
+
+        <div class="hero-card reveal">
+          <div class="device" aria-label="Prévia da página de oferta">
+            <div class="device-top"><span></span><span></span><span></span></div>
+            <div class="device-body">
+              <div class="fake-badge">Produto digital low ticket</div>
+              <h2 class="fake-h">Protocolo Barriga Zero em 7 Dias</h2>
+              <p class="fake-p">Um guia objetivo para reduzir inchaço, melhorar a digestão e deixar a rotina mais leve.</p>
+              <div class="stat-row">
+                <div class="stat"><strong>1 PDF</strong><span>guia principal</span></div>
+                <div class="stat"><strong>2 bônus</strong><span>apoio prático</span></div>
+                <div class="stat"><strong>7 dias</strong><span>de aplicação</span></div>
+              </div>
+              <div class="price-box">
+                <div>
+                  <div class="old">de R$ 47,00</div>
+                  <div class="new">R$ 14,90</div>
+                </div>
+                <a href="#oferta" class="btn btn-primary" style="min-height: 48px; padding: 0 18px;">Comprar</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="section-title reveal">
+          <h2>Se você se identifica com isso, essa oferta foi feita para você.</h2>
+          <p>Muitas pessoas não precisam de radicalismo. Precisam entender o que está causando o estufamento e seguir um caminho simples.</p>
+        </div>
+        <div class="pain-grid">
+          <article class="card reveal">
+            <div class="icon">⚠</div>
+            <h3>Barriga estufada ao longo do dia</h3>
+            <p>Você sente desconforto, peso e a sensação de que seu abdômen muda mesmo sem exagerar tanto na alimentação.</p>
+          </article>
+          <article class="card reveal">
+            <div class="icon">⏳</div>
+            <h3>Já tentou começar e travou</h3>
+            <p>Dietas duras, regras demais e muita informação acabam gerando desistência antes de qualquer consistência.</p>
+          </article>
+          <article class="card reveal">
+            <div class="icon">🧠</div>
+            <h3>Quer um plano fácil de seguir</h3>
+            <p>Você procura algo mais prático, organizado e com linguagem simples, sem promessas milagrosas e sem confusão.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="conteudo">
+      <div class="container split">
+        <div>
+          <div class="section-title reveal">
+            <h2>O que você recebe ao entrar hoje</h2>
+            <p>Uma estrutura enxuta, prática e pensada para gerar clareza logo no primeiro contato com o material.</p>
+          </div>
+          <div class="list">
+            <div class="list-item reveal"><div class="check">✓</div><div><strong>PDF principal: Protocolo Barriga Zero em 7 Dias</strong><br><span style="color:var(--muted)">Explica o erro principal, as regras básicas, a rotina sugerida e os pontos que mais travam os resultados.</span></div></div>
+            <div class="list-item reveal"><div class="check">✓</div><div><strong>Bônus 1: Lista de alimentos que ajudam a desinchar</strong><br><span style="color:var(--muted)">Frutas, vegetais e bebidas simples para incluir no dia a dia sem complicação.</span></div></div>
+            <div class="list-item reveal"><div class="check">✓</div><div><strong>Bônus 2: Cardápio simples para 3 dias</strong><br><span style="color:var(--muted)">Um exemplo organizado para começar com mais clareza, sem precisar montar tudo do zero.</span></div></div>
+            <div class="list-item reveal"><div class="check">✓</div><div><strong>Leitura rápida e fácil de aplicar</strong><br><span style="color:var(--muted)">Conteúdo criado para ser consumido sem enrolação, ideal para quem quer começar hoje.</span></div></div>
+          </div>
+        </div>
+
+        <aside class="price-panel reveal" id="oferta">
+          <div class="tag">Oferta de entrada</div>
+          <h3>Comece com um investimento acessível</h3>
+          <p>Você leva o material principal + 2 bônus de apoio por um valor low ticket pensado para facilitar sua primeira compra.</p>
+          <div class="price">
+            <span class="from">R$ 47,00</span>
+            <span class="to">R$ 14,90</span>
+          </div>
+          <p class="mini">Pagamento único. Acesso digital. Sem mensalidade.</p>
+          <a href="https://pay.kiwify.com.br/QkIeXo6" class="btn btn-primary" style="width:100%; margin-top:14px;">Quero começar agora</a>
+          <div class="seal">Garantia de 7 dias para você comprar com mais segurança</div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-title reveal">
+          <h2>Por que essa página transmite mais confiança</h2>
+          <p>Uma página boa não precisa parecer exagerada. Ela precisa ser clara, organizada e visualmente segura.</p>
+        </div>
+        <div class="trust-grid">
+          <article class="card reveal">
+            <div class="icon">🔒</div>
+            <h3>Visual limpo e premium</h3>
+            <p>Hierarquia visual forte, contraste bem trabalhado, blocos bem separados e botões claros para reduzir confusão.</p>
+          </article>
+          <article class="card reveal">
+            <div class="icon">🛡</div>
+            <h3>Linguagem sem exagero suspeito</h3>
+            <p>A página foca em orientação prática e evita promessas irreais que costumam soar como golpe.</p>
+          </article>
+          <article class="card reveal">
+            <div class="icon">✅</div>
+            <h3>Oferta fácil de entender</h3>
+            <p>O visitante sabe o que recebe, quanto paga, qual a garantia e qual o próximo passo, sem ruído.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section offer">
+      <div class="container">
+        <div class="section-title reveal">
+          <h2>Benefícios que deixam a decisão mais fácil</h2>
+          <p>O foco não é prometer milagre. É entregar organização, clareza e um primeiro passo simples.</p>
+        </div>
+        <div class="benefits-grid">
+          <article class="card reveal">
+            <div class="icon">🍃</div>
+            <h3>Mais leveza na rotina</h3>
+            <p>Entenda como pequenos ajustes alimentares podem ajudar a melhorar a sensação de estufamento e desconforto.</p>
+          </article>
+          <article class="card reveal">
+            <div class="icon">📘</div>
+            <h3>Conteúdo simples de consumir</h3>
+            <p>Sem linguagem técnica complicada. Você lê, entende e já consegue colocar em prática.</p>
+          </article>
+          <article class="card reveal">
+            <div class="icon">🎯</div>
+            <h3>Direcionamento objetivo</h3>
+            <p>Em vez de excesso de informação, você recebe um caminho enxuto para começar sem se perder.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-title reveal">
+          <h2>Como funciona depois da compra</h2>
+          <p>Quanto mais simples for o processo, maior a confiança e a chance de conversão.</p>
+        </div>
+        <div class="steps-grid">
+          <article class="card reveal">
+            <div class="icon">1</div>
+            <h3>Você conclui o pagamento</h3>
+            <p>Após clicar no botão de compra, o cliente segue para o checkout da sua plataforma.</p>
+          </article>
+          <article class="card reveal">
+            <div class="icon">2</div>
+            <h3>Recebe o acesso ao material</h3>
+            <p>Entrega digital imediata com o PDF principal e os bônus organizados.</p>
+          </article>
+          <article class="card reveal">
+            <div class="icon">3</div>
+            <h3>Começa a aplicar no mesmo dia</h3>
+            <p>Sem setup difícil. O objetivo é que a pessoa comece rápido e sinta valor logo no início.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container split">
+        <div>
+          <div class="section-title reveal">
+            <h2>O que está incluso na oferta</h2>
+            <p>Uma oferta low ticket precisa ser simples, clara e visualmente valorizada.</p>
+          </div>
+          <div class="bonus-grid" style="grid-template-columns:1fr;">
+            <article class="card reveal">
+              <div class="icon">📗</div>
+              <h3>Protocolo Barriga Zero em 7 Dias</h3>
+              <p>Guia principal com introdução, regras práticas, rotina sugerida e principais erros que travam os resultados.</p>
+            </article>
+            <article class="card reveal">
+              <div class="icon">🥗</div>
+              <h3>Bônus 1: Lista de alimentos que desincham</h3>
+              <p>Material de apoio com frutas, vegetais e bebidas que podem ser encaixados com facilidade.</p>
+            </article>
+            <article class="card reveal">
+              <div class="icon">🗓</div>
+              <h3>Bônus 2: Cardápio simples em 3 dias</h3>
+              <p>Modelo prático para a pessoa não depender de improviso nas primeiras decisões.</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="price-panel reveal">
+          <div class="tag">Oferta disponível hoje</div>
+          <h3>Transforme uma oferta simples em algo premium</h3>
+          <p>Essa estrutura visual ajuda seu produto a parecer mais sério, mais confiável e mais fácil de comprar.</p>
+          <div class="price">
+            <span class="from">R$ 47,00</span>
+            <span class="to">R$ 14,90</span>
+          </div>
+          <a id="checkout" href="#" class="btn btn-primary" style="width:100%;">Inserir link do checkout aqui</a>
+          <p class="mini" style="margin-top:12px;">Troque esse botão pelo link do seu checkout da Kiwify, Hotmart ou outra plataforma.</p>
+          <div class="seal">Página otimizada para desktop e celular</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-title reveal">
+          <h2>Perguntas frequentes</h2>
+          <p>Uma boa FAQ reduz objeções e faz a página parecer mais confiável.</p>
+        </div>
+        <div class="faq">
+          <details class="reveal" open>
+            <summary>Esse produto é físico ou digital?<span>+</span></summary>
+            <p>É um produto digital. Após a compra, o cliente recebe acesso ao material online ou por download, dependendo da plataforma que você usar.</p>
+          </details>
+          <details class="reveal">
+            <summary>Em quanto tempo eu recebo acesso?<span>+</span></summary>
+            <p>Normalmente o acesso é liberado logo após a confirmação do pagamento pela plataforma de checkout.</p>
+          </details>
+          <details class="reveal">
+            <summary>Isso substitui orientação médica ou nutricional?<span>+</span></summary>
+            <p>Não. O material é informativo e educacional. Ele não substitui consulta com médico, nutricionista ou outro profissional de saúde.</p>
+          </details>
+          <details class="reveal">
+            <summary>Tem garantia?<span>+</span></summary>
+            <p>Sim. Você pode oferecer garantia de 7 dias na plataforma para reduzir o risco percebido e aumentar a confiança do comprador.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="card reveal" style="padding: 34px; text-align:center; background: linear-gradient(180deg, rgba(92,242,161,.12), rgba(255,255,255,.04)); border-color: rgba(92,242,161,.22);">
+          <div class="eyebrow" style="margin: 0 auto 16px; width: fit-content;"><span class="dot"></span> Oferta de baixo risco</div>
+          <h2 style="margin:0 0 10px; font-size: clamp(1.9rem, 3.5vw, 3.2rem); letter-spacing:-.05em;">Comece com uma página que parece profissional de verdade.</h2>
+          <p style="margin:0 auto 22px; max-width: 720px; color: var(--muted); font-size:1.05rem;">Visual premium, blocos claros, chamadas fortes e uma estrutura feita para facilitar a decisão sem parecer golpe, exagero ou improviso.</p>
+          <a href="https://pay.kiwify.com.br/QkIeXo6" class="btn btn-primary">Quero usar essa oferta agora</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p><strong>Aviso importante:</strong> este material tem caráter informativo e educacional. Não substitui acompanhamento médico, nutricional ou qualquer orientação profissional individualizada.</p>
+      <p>© <span id="year"></span> Protocolo Barriga Zero. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <div class="sticky-bar" id="stickyBar" aria-hidden="true">
+    <div class="sticky-inner">
+      <div class="sticky-copy">
+        <strong>Protocolo Barriga Zero + 2 bônus</strong>
+        <span>Acesso digital imediato • R$ 14,90</span>
+      </div>
+      <a href="https://pay.kiwify.com.br/QkIeXo6" class="btn btn-primary">Comprar agora</a>
+    </div>
+  </div>
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.16 });
+    reveals.forEach(el => io.observe(el));
+
+    const stickyBar = document.getElementById('stickyBar');
+    const toggleSticky = () => {
+      if (window.scrollY > 700) stickyBar.classList.add('show');
+      else stickyBar.classList.remove('show');
+    };
+    toggleSticky();
+    window.addEventListener('scroll', toggleSticky, { passive: true });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    document.querySelectorAll('details').forEach((detail) => {
+      detail.addEventListener('toggle', () => {
+        if (!detail.open) return;
+        document.querySelectorAll('details').forEach((other) => {
+          if (other !== detail) other.open = false;
+        });
+      });
+    });
+  </script>
+</body>
+</html>
