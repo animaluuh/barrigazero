@@ -26,6 +26,7 @@
 
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
+
     body {
       margin: 0;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -36,6 +37,10 @@
       color: var(--text);
       line-height: 1.55;
       overflow-x: hidden;
+    }
+
+    body.quiz-active {
+      overflow: hidden;
     }
 
     a { color: inherit; text-decoration: none; }
@@ -613,9 +618,246 @@
       transform: translateY(0) scale(1);
     }
 
+    .quiz-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background:
+        radial-gradient(circle at top left, rgba(92,242,161,.14), transparent 30%),
+        radial-gradient(circle at 85% 15%, rgba(92,242,161,.10), transparent 25%),
+        linear-gradient(180deg, rgba(8,19,15,.96) 0%, rgba(7,17,13,.98) 100%);
+      backdrop-filter: blur(12px);
+    }
+
+    .quiz-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity .45s ease, visibility .45s ease;
+    }
+
+    .quiz-shell {
+      width: min(100%, 980px);
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .quiz-side,
+    .quiz-box {
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .quiz-side {
+      padding: 34px;
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .quiz-box {
+      padding: 30px;
+      background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.05));
+    }
+
+    .quiz-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      width: fit-content;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(92,242,161,.08);
+      border: 1px solid rgba(92,242,161,.18);
+      color: #d4ffe8;
+      font-size: .92rem;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    .quiz-side h2 {
+      margin: 0 0 14px;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      line-height: .98;
+      letter-spacing: -.05em;
+    }
+
+    .quiz-side p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 48ch;
+    }
+
+    .quiz-points {
+      display: grid;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .quiz-point {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--line);
+    }
+
+    .quiz-point strong {
+      display: block;
+      margin-bottom: 2px;
+      font-size: .98rem;
+    }
+
+    .quiz-progress {
+      margin-bottom: 22px;
+    }
+
+    .quiz-progress-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      color: var(--muted);
+      font-size: .95rem;
+      font-weight: 700;
+    }
+
+    .quiz-progress-bar {
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      overflow: hidden;
+    }
+
+    .quiz-progress-fill {
+      width: 20%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(135deg, var(--primary), #b8ffd8);
+      box-shadow: 0 8px 20px rgba(92,242,161,.22);
+      transition: width .3s ease;
+    }
+
+    .quiz-step {
+      display: none;
+      animation: fadeStep .25s ease;
+    }
+
+    .quiz-step.active {
+      display: block;
+    }
+
+    .quiz-step h3 {
+      margin: 0 0 8px;
+      font-size: clamp(1.4rem, 2vw, 2rem);
+      line-height: 1.05;
+      letter-spacing: -.04em;
+    }
+
+    .quiz-step p {
+      margin: 0 0 18px;
+      color: var(--muted);
+    }
+
+    .quiz-options {
+      display: grid;
+      gap: 12px;
+    }
+
+    .quiz-option {
+      width: 100%;
+      text-align: left;
+      padding: 18px 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.11);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      cursor: pointer;
+      transition: .22s ease;
+      font: inherit;
+      font-weight: 700;
+    }
+
+    .quiz-option:hover {
+      transform: translateY(-2px);
+      border-color: rgba(92,242,161,.35);
+      background: rgba(92,242,161,.08);
+    }
+
+    .quiz-option small {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .quiz-result {
+      display: none;
+      text-align: center;
+      padding-top: 10px;
+    }
+
+    .quiz-result.active {
+      display: block;
+      animation: fadeStep .25s ease;
+    }
+
+    .quiz-result .result-badge {
+      display: inline-flex;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: rgba(92,242,161,.12);
+      border: 1px solid rgba(92,242,161,.22);
+      color: #d9ffeb;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .quiz-result h3 {
+      margin: 0 0 10px;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      line-height: 1;
+      letter-spacing: -.05em;
+    }
+
+    .quiz-result p {
+      margin: 0 auto 22px;
+      max-width: 52ch;
+      color: var(--muted);
+    }
+
+    .quiz-result .btn {
+      width: 100%;
+    }
+
+    .sales-page.hidden-sales {
+      visibility: hidden;
+      opacity: 0;
+      height: 0;
+      overflow: hidden;
+    }
+
     @keyframes pulse {
       0%, 100% { transform: scale(1); opacity: 1; }
       50% { transform: scale(1.18); opacity: .75; }
+    }
+
+    @keyframes fadeStep {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @media (max-width: 980px) {
@@ -625,7 +867,8 @@
       .benefits-grid,
       .bonus-grid,
       .steps-grid,
-      .trust-grid {
+      .trust-grid,
+      .quiz-shell {
         grid-template-columns: 1fr;
       }
 
@@ -642,316 +885,624 @@
       .sticky-inner { flex-direction: column; align-items: stretch; }
       .sticky-inner .btn { width: 100%; }
       .nav { padding-bottom: 22px; }
+      .quiz-side,
+      .quiz-box {
+        padding: 22px;
+        border-radius: 24px;
+      }
+      .quiz-screen {
+        align-items: stretch;
+        overflow-y: auto;
+      }
     }
   </style>
 </head>
-<body>
-  <header class="hero">
-    <div class="container">
-      <nav class="nav reveal">
-        <div class="brand">
-          <div class="brand-mark" aria-hidden="true"></div>
-          <div>
-            <div>Protocolo Barriga Zero</div>
-            <small style="color: var(--muted); font-weight: 600;">Método digital • acesso imediato</small>
-          </div>
-        </div>
-        <a href="https://pay.kiwify.com.br/QkIeXo6" class="nav-cta">Quero começar agora</a>
-      </nav>
+<body class="quiz-active">
 
-      <div class="hero-wrap">
-        <div class="reveal">
-          <div class="eyebrow"><span class="dot"></span> Método simples para reduzir inchaço e recuperar leveza</div>
-          <h1>Sua barriga pode estar <span class="gradient-text">inchada</span>, não necessariamente com gordura acumulada.</h1>
-          <p class="lead">Descubra um plano direto, fácil de aplicar e criado para quem quer melhorar a alimentação, reduzir o estufamento abdominal e começar a perceber diferença no espelho sem entrar em dietas malucas.</p>
-
-          <div class="hero-actions">
-            <a href="https://pay.kiwify.com.br/QkIeXo6" class="btn btn-primary">Quero acessar por R$ 14,90</a>
-          </div>
-
-          <div class="micro-proof">
-            <span>✔ Acesso digital imediato</span>
-            <span>✔ Leitura simples e prática</span>
-            <span>✔ Garantia de 7 dias</span>
-          </div>
+  <div class="quiz-screen" id="quizScreen">
+  <div class="quiz-shell">
+    <div class="quiz-side">
+      <div>
+        <div class="quiz-kicker">
+          <span class="dot" style="width:9px;height:9px;border-radius:999px;background:var(--primary);box-shadow:0 0 18px rgba(92,242,161,.8);"></span>
+          Avaliação estratégica
         </div>
 
-        <div class="hero-card reveal">
-          <div class="device" aria-label="Prévia da página de oferta">
-            <div class="device-top"><span></span><span></span><span></span></div>
-            <div class="device-body">
-              <div class="fake-badge">Produto digital</div>
-              <h2 class="fake-h">Protocolo Barriga Zero em 7 Dias</h2>
-              <p class="fake-p">Um guia objetivo para reduzir inchaço, melhorar a digestão e deixar a rotina mais leve.</p>
-              <div class="stat-row">
-                <div class="stat"><strong>principal</strong><span>guia principal</span></div>
-                <div class="stat"><strong>2 bônus</strong><span>apoio prático</span></div>
-                <div class="stat"><strong>7 dias</strong><span>de aplicação</span></div>
-              </div>
-              <div class="price-box">
-                <div>
-                  <div class="old">de R$ 47,00</div>
-                  <div class="new">R$ 14,90</div>
+        <h2>Responda 4 perguntas e descubra o caminho mais indicado para começar a desinchar.</h2>
+
+        <p>
+          Essa análise rápida foi criada para identificar o tipo de dificuldade que mais trava seus resultados e liberar sua recomendação personalizada ao final.
+        </p>
+
+        <div class="quiz-points">
+          <div class="quiz-point">
+            <div class="check">✓</div>
+            <div>
+              <strong>Leva menos de 1 minuto</strong>
+              <span style="color:var(--muted);">Fluxo simples, rápido e direto.</span>
+            </div>
+          </div>
+
+          <div class="quiz-point">
+            <div class="check">✓</div>
+            <div>
+              <strong>Mais clareza antes de avançar</strong>
+              <span style="color:var(--muted);">As perguntas ajudam a criar mais identificação com a oferta.</span>
+            </div>
+          </div>
+
+          <div class="quiz-point">
+            <div class="check">✓</div>
+            <div>
+              <strong>Recomendação liberada no final</strong>
+              <span style="color:var(--muted);">Depois das respostas, a página completa será desbloqueada.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="micro-proof" style="margin-top:22px;">
+        <span>✔ 4 perguntas rápidas</span>
+        <span>✔ análise visual</span>
+        <span>✔ acesso liberado no final</span>
+      </div>
+    </div>
+
+    <div class="quiz-box">
+      <div class="quiz-progress">
+        <div class="quiz-progress-top">
+          <span id="quizStepText">Pergunta 1 de 4</span>
+          <span id="quizPercentText">25%</span>
+        </div>
+        <div class="quiz-progress-bar">
+          <div class="quiz-progress-fill" id="quizProgressFill"></div>
+        </div>
+      </div>
+
+      <div class="quiz-step active" data-step="1">
+        <h3>Qual situação mais te incomoda hoje?</h3>
+        <p>Escolha o cenário que mais parece com sua realidade atual.</p>
+        <div class="quiz-options">
+          <button class="quiz-option" data-next="2">
+            Barriga estufada quase todo dia
+            <small>Sinto desconforto, peso e aparência inchada.</small>
+          </button>
+
+          <button class="quiz-option" data-next="2">
+            Tento melhorar, mas não vejo mudança
+            <small>Parece que faço esforço e continuo no mesmo lugar.</small>
+          </button>
+
+          <button class="quiz-option" data-next="2">
+            Começo motivado, mas travo rápido
+            <small>Falta constância e um caminho mais simples.</small>
+          </button>
+        </div>
+      </div>
+
+      <div class="quiz-step" data-step="2">
+        <h3>Quando você gostaria de começar a perceber diferença?</h3>
+        <p>Escolha a expectativa que mais combina com o que você quer agora.</p>
+        <div class="quiz-options">
+          <button class="quiz-option" data-next="3">
+            Nos próximos 7 dias
+            <small>Quero começar rápido e sentir evolução logo.</small>
+          </button>
+
+          <button class="quiz-option" data-next="3">
+            Ainda nesta semana
+            <small>Quero sair da inércia o quanto antes.</small>
+          </button>
+
+          <button class="quiz-option" data-next="3">
+            O mais rápido possível
+            <small>Não quero continuar adiando isso.</small>
+          </button>
+        </div>
+      </div>
+
+      <div class="quiz-step" data-step="3">
+        <h3>O que mais costuma te atrapalhar?</h3>
+        <p>Essa resposta ajuda a direcionar melhor sua recomendação final.</p>
+        <div class="quiz-options">
+          <button class="quiz-option" data-next="4">
+            Dietas muito restritas
+            <small>Quando complica demais, eu desisto.</small>
+          </button>
+
+          <button class="quiz-option" data-next="4">
+            Informação demais e pouca clareza
+            <small>Vejo muitas dicas, mas não sei por onde começar.</small>
+          </button>
+
+          <button class="quiz-option" data-next="4">
+            Falta de um plano simples
+            <small>Preciso de algo mais prático para seguir.</small>
+          </button>
+        </div>
+      </div>
+
+      <div class="quiz-step" data-step="4">
+        <h3>Qual tipo de método combina mais com você?</h3>
+        <p>Escolha a abordagem que faria mais sentido na sua rotina.</p>
+        <div class="quiz-options">
+          <button class="quiz-option" data-next="loading">
+            Simples e fácil de aplicar
+            <small>Quero algo leve, direto e sem exageros.</small>
+          </button>
+
+          <button class="quiz-option" data-next="loading">
+            Direto ao ponto
+            <small>Quero clareza e execução rápida.</small>
+          </button>
+
+          <button class="quiz-option" data-next="loading">
+            Prático para o dia a dia
+            <small>Preciso de algo possível de manter.</small>
+          </button>
+        </div>
+      </div>
+
+      <div class="quiz-loading" id="quizLoading">
+        <div class="quiz-loading-badge">Analisando respostas</div>
+        <h3>Estamos montando sua recomendação ideal...</h3>
+        <p>
+          Cruzando suas respostas para identificar um caminho mais simples, rápido e coerente com o seu perfil.
+        </p>
+
+        <div class="analysis-list">
+          <div class="analysis-item active" id="analysis1">
+            <span class="analysis-dot"></span>
+            Identificando padrão de dificuldade
+          </div>
+          <div class="analysis-item" id="analysis2">
+            <span class="analysis-dot"></span>
+            Ajustando recomendação ao seu objetivo
+          </div>
+          <div class="analysis-item" id="analysis3">
+            <span class="analysis-dot"></span>
+            Liberando acesso à recomendação final
+          </div>
+        </div>
+      </div>
+
+      <div class="quiz-result" id="quizResult">
+        <div class="result-badge">Recomendação liberada</div>
+        <h3>Seu perfil combina com um plano mais simples, direto e fácil de seguir.</h3>
+        <p>
+          Pelas suas respostas, o melhor caminho para você agora é evitar radicalismos e começar com um método mais enxuto, criado para reduzir o estufamento, organizar a alimentação e facilitar a constância.
+        </p>
+        <button class="btn btn-primary" id="showOfferBtn">Ver minha recomendação completa</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="sales-page hidden-sales" id="salesPage">
+    <header class="hero">
+      <div class="container">
+        <nav class="nav reveal">
+          <div class="brand">
+            <div class="brand-mark" aria-hidden="true"></div>
+            <div>
+              <div>Protocolo Barriga Zero</div>
+              <small style="color: var(--muted); font-weight: 600;">Método digital • acesso imediato</small>
+            </div>
+          </div>
+          <a href="https://pay.kiwify.com.br/QkIeXo6" class="nav-cta">Quero começar agora</a>
+        </nav>
+
+        <div class="hero-wrap">
+          <div class="reveal">
+            <div class="eyebrow"><span class="dot"></span> Método simples para reduzir inchaço e recuperar leveza</div>
+            <h1>Sua barriga pode estar <span class="gradient-text">inchada</span>, não necessariamente com gordura acumulada.</h1>
+            <p class="lead">Descubra um plano direto, fácil de aplicar e criado para quem quer melhorar a alimentação, reduzir o estufamento abdominal e começar a perceber diferença no espelho sem entrar em dietas malucas.</p>
+
+            <div class="hero-actions">
+              <a href="https://pay.kiwify.com.br/QkIeXo6" class="btn btn-primary">Quero acessar por R$ 14,90</a>
+            </div>
+
+            <div class="micro-proof">
+              <span>✔ Acesso digital imediato</span>
+              <span>✔ Leitura simples e prática</span>
+              <span>✔ Garantia de 7 dias</span>
+            </div>
+          </div>
+
+          <div class="hero-card reveal">
+            <div class="device" aria-label="Prévia da página de oferta">
+              <div class="device-top"><span></span><span></span><span></span></div>
+              <div class="device-body">
+                <div class="fake-badge">Produto digital</div>
+                <h2 class="fake-h">Protocolo Barriga Zero em 7 Dias</h2>
+                <p class="fake-p">Um guia objetivo para reduzir inchaço, melhorar a digestão e deixar a rotina mais leve.</p>
+                <div class="stat-row">
+                  <div class="stat"><strong>principal</strong><span>guia principal</span></div>
+                  <div class="stat"><strong>2 bônus</strong><span>apoio prático</span></div>
+                  <div class="stat"><strong>7 dias</strong><span>de aplicação</span></div>
                 </div>
-                <a href="https://pay.kiwify.com.br/QkIeXo6" class="btn btn-primary" style="min-height: 48px; padding: 0 18px;">Comprar</a>
+                <div class="price-box">
+                  <div>
+                    <div class="old">de R$ 47,00</div>
+                    <div class="new">R$ 14,90</div>
+                  </div>
+                  <a href="https://pay.kiwify.com.br/QkIeXo6" class="btn btn-primary" style="min-height: 48px; padding: 0 18px;">Comprar</a>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <main>
-    <section class="section">
-      <div class="container">
-        <div class="section-title reveal">
-          <h2>Se você se identifica com isso, essa oferta foi feita para você.</h2>
-          <p>Muitas pessoas não precisam de radicalismo. Precisam entender o que está causando o estufamento e seguir um caminho simples.</p>
-        </div>
-        <div class="pain-grid">
-          <article class="card reveal">
-            <div class="icon">⚠</div>
-            <h3>Barriga estufada ao longo do dia</h3>
-            <p>Você sente desconforto, peso e a sensação de que seu abdômen muda mesmo sem exagerar tanto na alimentação.</p>
-          </article>
-          <article class="card reveal">
-            <div class="icon">⏳</div>
-            <h3>Já tentou começar e travou</h3>
-            <p>Dietas duras, regras demais e muita informação acabam gerando desistência antes de qualquer consistência.</p>
-          </article>
-          <article class="card reveal">
-            <div class="icon">🧠</div>
-            <h3>Quer um plano fácil de seguir</h3>
-            <p>Você procura algo mais prático, organizado e com linguagem simples, sem promessas milagrosas e sem confusão.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="conteudo">
-      <div class="container split">
-        <div>
+    <main>
+      <section class="section">
+        <div class="container">
           <div class="section-title reveal">
-            <h2>O que você recebe ao entrar hoje</h2>
-            <p>Uma estrutura enxuta, prática e pensada para gerar clareza logo no primeiro contato com o material.</p>
+            <h2>Se você se identifica com isso, essa oferta foi feita para você.</h2>
+            <p>Muitas pessoas não precisam de radicalismo. Precisam entender o que está causando o estufamento e seguir um caminho simples.</p>
           </div>
-          <div class="list">
-            <div class="list-item reveal"><div class="check">✓</div><div><strong>Estrutura principal: Protocolo Barriga Zero em 7 Dias</strong><br><span style="color:var(--muted)">Explica o erro principal, as regras básicas, a rotina sugerida e os pontos que mais travam os resultados.</span></div></div>
-            <div class="list-item reveal"><div class="check">✓</div><div><strong>Bônus 1: Lista de alimentos que ajudam a desinchar</strong><br><span style="color:var(--muted)">Frutas, vegetais e bebidas simples para incluir no dia a dia sem complicação.</span></div></div>
-            <div class="list-item reveal"><div class="check">✓</div><div><strong>Bônus 2: Cardápio simples para 3 dias</strong><br><span style="color:var(--muted)">Um exemplo organizado para começar com mais clareza, sem precisar montar tudo do zero.</span></div></div>
-            <div class="list-item reveal"><div class="check">✓</div><div><strong>Leitura rápida e fácil de aplicar</strong><br><span style="color:var(--muted)">Conteúdo criado para ser consumido sem enrolação, ideal para quem quer começar hoje.</span></div></div>
+          <div class="pain-grid">
+            <article class="card reveal">
+              <div class="icon">⚠</div>
+              <h3>Barriga estufada ao longo do dia</h3>
+              <p>Você sente desconforto, peso e a sensação de que seu abdômen muda mesmo sem exagerar tanto na alimentação.</p>
+            </article>
+
+            <article class="card reveal">
+              <div class="icon">⏳</div>
+              <h3>Já tentou começar e travou</h3>
+              <p>Dietas duras, regras demais e muita informação acabam gerando desistência antes de qualquer consistência.</p>
+            </article>
+
+            <article class="card reveal">
+              <div class="icon">🧠</div>
+              <h3>Quer um plano fácil de seguir</h3>
+              <p>Você procura algo mais prático, organizado e com linguagem simples, sem promessas milagrosas e sem confusão.</p>
+            </article>
           </div>
         </div>
+      </section>
+            <section class="section" id="conteudo">
+        <div class="container split">
+          <div>
+            <div class="section-title reveal">
+              <h2>O que você recebe ao entrar hoje</h2>
+              <p>Uma estrutura enxuta, prática e pensada para gerar clareza logo no primeiro contato com o material.</p>
+            </div>
+            <div class="list">
+              <div class="list-item reveal">
+                <div class="check">✓</div>
+                <div>
+                  <strong>Estrutura principal: Protocolo Barriga Zero em 7 Dias</strong><br>
+                  <span style="color:var(--muted)">Explica o erro principal, as regras básicas, a rotina sugerida e os pontos que mais travam os resultados.</span>
+                </div>
+              </div>
 
-        <aside class="price-panel reveal" id="oferta">
-          <div class="tag">Oferta de entrada</div>
-          <h3>Comece com um investimento acessível</h3>
-          <p>Você leva o material principal + 2 bônus de apoio por um valor low ticket pensado para facilitar sua primeira compra.</p>
-          <div class="price">
-            <span class="from">R$ 47,00</span>
-            <span class="to">R$ 14,90</span>
+              <div class="list-item reveal">
+                <div class="check">✓</div>
+                <div>
+                  <strong>Bônus 1: Lista de alimentos que ajudam a desinchar</strong><br>
+                  <span style="color:var(--muted)">Frutas, vegetais e bebidas simples para incluir no dia a dia sem complicação.</span>
+                </div>
+              </div>
+
+              <div class="list-item reveal">
+                <div class="check">✓</div>
+                <div>
+                  <strong>Bônus 2: Cardápio simples para 3 dias</strong><br>
+                  <span style="color:var(--muted)">Um exemplo organizado para começar com mais clareza, sem precisar montar tudo do zero.</span>
+                </div>
+              </div>
+
+              <div class="list-item reveal">
+                <div class="check">✓</div>
+                <div>
+                  <strong>Leitura rápida e fácil de aplicar</strong><br>
+                  <span style="color:var(--muted)">Conteúdo criado para ser consumido sem enrolação, ideal para quem quer começar hoje.</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <p class="mini">Pagamento único. Acesso digital. Sem mensalidade.</p>
-          <a href="https://pay.kiwify.com.br/QkIeXo6" class="btn btn-primary" style="width:100%; margin-top:14px;">Quero começar agora</a>
-          <div class="seal">Garantia de 7 dias para você comprar com mais segurança</div>
-        </aside>
-      </div>
-    </section>
 
-    <section class="section">
-      <div class="container">
-        <div class="section-title reveal">
-          <h2>Por que essa página transmite mais confiança</h2>
-          <p>Uma página boa não precisa parecer exagerada. Ela precisa ser clara, organizada e visualmente segura.</p>
+          <aside class="price-panel reveal" id="oferta">
+            <div class="tag">Oferta de entrada</div>
+            <h3>Comece com um investimento acessível</h3>
+            <p>Você leva o material principal + 2 bônus de apoio por um valor low ticket pensado para facilitar sua primeira compra.</p>
+            <div class="price">
+              <span class="from">R$ 47,00</span>
+              <span class="to">R$ 14,90</span>
+            </div>
+            <p class="mini">Pagamento único. Acesso digital. Sem mensalidade.</p>
+            <a href="https://pay.kiwify.com.br/QkIeXo6" class="btn btn-primary" style="width:100%; margin-top:14px;">Quero começar agora</a>
+            <div class="seal">Garantia de 7 dias para você comprar com mais segurança</div>
+          </aside>
         </div>
-        <div class="trust-grid">
-          <article class="card reveal">
-            <div class="icon">🔒</div>
-            <h3>Visual limpo e premium</h3>
-            <p>Hierarquia visual forte, contraste bem trabalhado, blocos bem separados e botões claros para reduzir confusão.</p>
-          </article>
-          <article class="card reveal">
-            <div class="icon">🛡</div>
-            <h3>Linguagem sem exagero suspeito</h3>
-            <p>A página foca em orientação prática e evita promessas irreais que costumam soar como golpe.</p>
-          </article>
-          <article class="card reveal">
-            <div class="icon">✅</div>
-            <h3>Oferta fácil de entender</h3>
-            <p>O visitante sabe o que recebe, quanto paga, qual a garantia e qual o próximo passo, sem ruído.</p>
-          </article>
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="section offer">
-      <div class="container">
-        <div class="section-title reveal">
-          <h2>Benefícios que deixam a decisão mais fácil</h2>
-          <p>O foco não é prometer milagre. É entregar organização, clareza e um primeiro passo simples.</p>
-        </div>
-        <div class="benefits-grid">
-          <article class="card reveal">
-            <div class="icon">🍃</div>
-            <h3>Mais leveza na rotina</h3>
-            <p>Entenda como pequenos ajustes alimentares podem ajudar a melhorar a sensação de estufamento e desconforto.</p>
-          </article>
-          <article class="card reveal">
-            <div class="icon">📘</div>
-            <h3>Conteúdo simples de consumir</h3>
-            <p>Sem linguagem técnica complicada. Você lê, entende e já consegue colocar em prática.</p>
-          </article>
-          <article class="card reveal">
-            <div class="icon">🎯</div>
-            <h3>Direcionamento objetivo</h3>
-            <p>Em vez de excesso de informação, você recebe um caminho enxuto para começar sem se perder.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="section-title reveal">
-          <h2>Como funciona depois da compra</h2>
-          <p>Quanto mais simples for o processo, maior a confiança e a chance de conversão.</p>
-        </div>
-        <div class="steps-grid">
-          <article class="card reveal">
-            <div class="icon">1</div>
-            <h3>Você conclui o pagamento</h3>
-            <p>Após clicar no botão de compra, o cliente segue para o checkout da sua plataforma.</p>
-          </article>
-          <article class="card reveal">
-            <div class="icon">2</div>
-            <h3>Recebe o acesso ao material</h3>
-            <p>Entrega digital imediata com o PDF principal e os bônus organizados.</p>
-          </article>
-          <article class="card reveal">
-            <div class="icon">3</div>
-            <h3>Começa a aplicar no mesmo dia</h3>
-            <p>Sem setup difícil. O objetivo é que a pessoa comece rápido e sinta valor logo no início.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container split">
-        <div>
+      <section class="section">
+        <div class="container">
           <div class="section-title reveal">
-            <h2>O que está incluso na oferta</h2>
-            <p>Uma oferta low ticket precisa ser simples, clara e visualmente valorizada.</p>
+            <h2>Por que essa página transmite mais confiança</h2>
+            <p>Uma página boa não precisa parecer exagerada. Ela precisa ser clara, organizada e visualmente segura.</p>
           </div>
-          <div class="bonus-grid" style="grid-template-columns:1fr;">
+          <div class="trust-grid">
             <article class="card reveal">
-              <div class="icon">📗</div>
-              <h3>Protocolo Barriga Zero em 7 Dias</h3>
-              <p>Guia principal com introdução, regras práticas, rotina sugerida e principais erros que travam os resultados.</p>
+              <div class="icon">🔒</div>
+              <h3>Visual limpo e premium</h3>
+              <p>Hierarquia visual forte, contraste bem trabalhado, blocos bem separados e botões claros para reduzir confusão.</p>
             </article>
+
             <article class="card reveal">
-              <div class="icon">🥗</div>
-              <h3>Bônus 1: Lista de alimentos que desincham</h3>
-              <p>Material de apoio com frutas, vegetais e bebidas que podem ser encaixados com facilidade.</p>
+              <div class="icon">🛡</div>
+              <h3>Linguagem sem exagero suspeito</h3>
+              <p>A página foca em orientação prática e evita promessas irreais que costumam soar como golpe.</p>
             </article>
+
             <article class="card reveal">
-              <div class="icon">🗓</div>
-              <h3>Bônus 2: Cardápio simples em 3 dias</h3>
-              <p>Modelo prático para a pessoa não depender de improviso nas primeiras decisões.</p>
+              <div class="icon">✅</div>
+              <h3>Oferta fácil de entender</h3>
+              <p>O visitante sabe o que recebe, quanto paga, qual a garantia e qual o próximo passo, sem ruído.</p>
             </article>
           </div>
         </div>
+      </section>
 
-        <div class="price-panel reveal">
-          <div class="tag">Oferta disponível hoje</div>
-          <h3>Transforme uma oferta simples em algo premium</h3>
-          <p>Essa estrutura visual ajuda seu produto a parecer mais sério, mais confiável e mais fácil de comprar.</p>
-          <div class="price">
-            <span class="from">R$ 47,00</span>
-            <span class="to">R$ 14,90</span>
+      <section class="section offer">
+        <div class="container">
+          <div class="section-title reveal">
+            <h2>Benefícios que deixam a decisão mais fácil</h2>
+            <p>O foco não é prometer milagre. É entregar organização, clareza e um primeiro passo simples.</p>
           </div>
-          <a id="checkout" href="#" class="btn btn-primary" style="width:100%;">Inserir link do checkout aqui</a>
-          <p class="mini" style="margin-top:12px;">Troque esse botão pelo link do seu checkout da Kiwify, Hotmart ou outra plataforma.</p>
-          <div class="seal">Página otimizada para desktop e celular</div>
-        </div>
-      </div>
-    </section>
+          <div class="benefits-grid">
+            <article class="card reveal">
+              <div class="icon">🍃</div>
+              <h3>Mais leveza na rotina</h3>
+              <p>Entenda como pequenos ajustes alimentares podem ajudar a melhorar a sensação de estufamento e desconforto.</p>
+            </article>
 
-    <section class="section">
+            <article class="card reveal">
+              <div class="icon">📘</div>
+              <h3>Conteúdo simples de consumir</h3>
+              <p>Sem linguagem técnica complicada. Você lê, entende e já consegue colocar em prática.</p>
+            </article>
+
+            <article class="card reveal">
+              <div class="icon">🎯</div>
+              <h3>Direcionamento objetivo</h3>
+              <p>Em vez de excesso de informação, você recebe um caminho enxuto para começar sem se perder.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-title reveal">
+            <h2>Como funciona depois da compra</h2>
+            <p>Quanto mais simples for o processo, maior a confiança e a chance de conversão.</p>
+          </div>
+          <div class="steps-grid">
+            <article class="card reveal">
+              <div class="icon">1</div>
+              <h3>Você conclui o pagamento</h3>
+              <p>Após clicar no botão de compra, o cliente segue para o checkout da sua plataforma.</p>
+            </article>
+
+            <article class="card reveal">
+              <div class="icon">2</div>
+              <h3>Recebe o acesso ao material</h3>
+              <p>Entrega digital imediata com o PDF principal e os bônus organizados.</p>
+            </article>
+
+            <article class="card reveal">
+              <div class="icon">3</div>
+              <h3>Começa a aplicar no mesmo dia</h3>
+              <p>Sem setup difícil. O objetivo é que a pessoa comece rápido e sinta valor logo no início.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container split">
+          <div>
+            <div class="section-title reveal">
+              <h2>O que está incluso na oferta</h2>
+              <p>Uma oferta low ticket precisa ser simples, clara e visualmente valorizada.</p>
+            </div>
+
+            <div class="bonus-grid" style="grid-template-columns:1fr;">
+              <article class="card reveal">
+                <div class="icon">📗</div>
+                <h3>Protocolo Barriga Zero em 7 Dias</h3>
+                <p>Guia principal com introdução, regras práticas, rotina sugerida e principais erros que travam os resultados.</p>
+              </article>
+
+              <article class="card reveal">
+                <div class="icon">🥗</div>
+                <h3>Bônus 1: Lista de alimentos que desincham</h3>
+                <p>Material de apoio com frutas, vegetais e bebidas que podem ser encaixados com facilidade.</p>
+              </article>
+
+              <article class="card reveal">
+                <div class="icon">🗓</div>
+                <h3>Bônus 2: Cardápio simples em 3 dias</h3>
+                <p>Modelo prático para a pessoa não depender de improviso nas primeiras decisões.</p>
+              </article>
+            </div>
+          </div>
+
+          <div class="price-panel reveal">
+            <div class="tag">Oferta disponível hoje</div>
+            <h3>Transforme uma oferta simples em algo premium</h3>
+            <p>Essa estrutura visual ajuda seu produto a parecer mais sério, mais confiável e mais fácil de comprar.</p>
+            <div class="price">
+              <span class="from">R$ 47,00</span>
+              <span class="to">R$ 14,90</span>
+            </div>
+            <a id="checkout" href="https://pay.kiwify.com.br/QkIeXo6" class="btn btn-primary" style="width:100%;">Quero garantir meu acesso</a>
+            <p class="mini" style="margin-top:12px;">Pagamento único e acesso digital liberado logo após a confirmação.</p>
+            <div class="seal">Página otimizada para desktop e celular</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-title reveal">
+            <h2>Perguntas frequentes</h2>
+            <p>Uma boa FAQ reduz objeções e faz a página parecer mais confiável.</p>
+          </div>
+
+          <div class="faq">
+            <details class="reveal" open>
+              <summary>Esse produto é físico ou digital?<span>+</span></summary>
+              <p>É um produto digital. Após a compra, o cliente recebe acesso ao material online ou por download, dependendo da plataforma que você usar.</p>
+            </details>
+
+            <details class="reveal">
+              <summary>Em quanto tempo eu recebo acesso?<span>+</span></summary>
+              <p>Normalmente o acesso é liberado logo após a confirmação do pagamento pela plataforma de checkout.</p>
+            </details>
+
+            <details class="reveal">
+              <summary>Isso substitui orientação médica ou nutricional?<span>+</span></summary>
+              <p>Não. O material é informativo e educacional. Ele não substitui consulta com médico, nutricionista ou outro profissional de saúde.</p>
+            </details>
+
+            <details class="reveal">
+              <summary>Tem garantia?<span>+</span></summary>
+              <p>Sim. Você pode oferecer garantia de 7 dias na plataforma para reduzir o risco percebido e aumentar a confiança do comprador.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="card reveal" style="padding: 34px; text-align:center; background: linear-gradient(180deg, rgba(92,242,161,.12), rgba(255,255,255,.04)); border-color: rgba(92,242,161,.22);">
+            <div class="eyebrow" style="margin: 0 auto 16px; width: fit-content;">
+              <span class="dot"></span> Oferta de baixo risco
+            </div>
+            <h2 style="margin:0 0 10px; font-size: clamp(1.9rem, 3.5vw, 3.2rem); letter-spacing:-.05em;">
+              Comece com uma página que parece profissional de verdade.
+            </h2>
+            <p style="margin:0 auto 22px; max-width: 720px; color: var(--muted); font-size:1.05rem;">
+              Visual premium, blocos claros, chamadas fortes e uma estrutura feita para facilitar a decisão sem parecer golpe, exagero ou improviso.
+            </p>
+            <a href="https://pay.kiwify.com.br/QkIeXo6" class="btn btn-primary">Quero usar essa oferta agora</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
       <div class="container">
-        <div class="section-title reveal">
-          <h2>Perguntas frequentes</h2>
-          <p>Uma boa FAQ reduz objeções e faz a página parecer mais confiável.</p>
-        </div>
-        <div class="faq">
-          <details class="reveal" open>
-            <summary>Esse produto é físico ou digital?<span>+</span></summary>
-            <p>É um produto digital. Após a compra, o cliente recebe acesso ao material online ou por download, dependendo da plataforma que você usar.</p>
-          </details>
-          <details class="reveal">
-            <summary>Em quanto tempo eu recebo acesso?<span>+</span></summary>
-            <p>Normalmente o acesso é liberado logo após a confirmação do pagamento pela plataforma de checkout.</p>
-          </details>
-          <details class="reveal">
-            <summary>Isso substitui orientação médica ou nutricional?<span>+</span></summary>
-            <p>Não. O material é informativo e educacional. Ele não substitui consulta com médico, nutricionista ou outro profissional de saúde.</p>
-          </details>
-          <details class="reveal">
-            <summary>Tem garantia?<span>+</span></summary>
-            <p>Sim. Você pode oferecer garantia de 7 dias na plataforma para reduzir o risco percebido e aumentar a confiança do comprador.</p>
-          </details>
-        </div>
+        <p><strong>Aviso importante:</strong> este material tem caráter informativo e educacional. Não substitui acompanhamento médico, nutricional ou qualquer orientação profissional individualizada.</p>
+        <p>© <span id="year"></span> Protocolo Barriga Zero. Todos os direitos reservados.</p>
       </div>
-    </section>
+    </footer>
 
-    <section class="section">
-      <div class="container">
-        <div class="card reveal" style="padding: 34px; text-align:center; background: linear-gradient(180deg, rgba(92,242,161,.12), rgba(255,255,255,.04)); border-color: rgba(92,242,161,.22);">
-          <div class="eyebrow" style="margin: 0 auto 16px; width: fit-content;"><span class="dot"></span> Oferta de baixo risco</div>
-          <h2 style="margin:0 0 10px; font-size: clamp(1.9rem, 3.5vw, 3.2rem); letter-spacing:-.05em;">Comece com uma página que parece profissional de verdade.</h2>
-          <p style="margin:0 auto 22px; max-width: 720px; color: var(--muted); font-size:1.05rem;">Visual premium, blocos claros, chamadas fortes e uma estrutura feita para facilitar a decisão sem parecer golpe, exagero ou improviso.</p>
-          <a href="https://pay.kiwify.com.br/QkIeXo6" class="btn btn-primary">Quero usar essa oferta agora</a>
+    <div class="sticky-bar" id="stickyBar" aria-hidden="true">
+      <div class="sticky-inner">
+        <div class="sticky-copy">
+          <strong>Protocolo Barriga Zero + 2 bônus</strong>
+          <span>Acesso digital imediato • R$ 14,90</span>
         </div>
+        <a href="https://pay.kiwify.com.br/QkIeXo6" class="btn btn-primary">Comprar agora</a>
       </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="container">
-      <p><strong>Aviso importante:</strong> este material tem caráter informativo e educacional. Não substitui acompanhamento médico, nutricional ou qualquer orientação profissional individualizada.</p>
-      <p>© <span id="year"></span> Protocolo Barriga Zero. Todos os direitos reservados.</p>
-    </div>
-  </footer>
-
-  <div class="sticky-bar" id="stickyBar" aria-hidden="true">
-    <div class="sticky-inner">
-      <div class="sticky-copy">
-        <strong>Protocolo Barriga Zero + 2 bônus</strong>
-        <span>Acesso digital imediato • R$ 14,90</span>
-      </div>
-      <a href="https://pay.kiwify.com.br/QkIeXo6" class="btn btn-primary">Comprar agora</a>
     </div>
   </div>
 
   <script>
-    const reveals = document.querySelectorAll('.reveal');
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          io.unobserve(entry.target);
+    const quizScreen = document.getElementById('quizScreen');
+    const salesPage = document.getElementById('salesPage');
+    const quizSteps = document.querySelectorAll('.quiz-step');
+    const quizResult = document.getElementById('quizResult');
+    const quizOptions = document.querySelectorAll('.quiz-option');
+    const quizProgressFill = document.getElementById('quizProgressFill');
+    const quizStepText = document.getElementById('quizStepText');
+    const quizPercentText = document.getElementById('quizPercentText');
+    const showOfferBtn = document.getElementById('showOfferBtn');
+    const stickyBar = document.getElementById('stickyBar');
+
+    let currentStep = 1;
+    const totalSteps = 4;
+
+    function updateQuizProgress(step) {
+      const percent = Math.round((step / totalSteps) * 100);
+      quizProgressFill.style.width = percent + '%';
+      quizStepText.textContent = `Pergunta ${step} de ${totalSteps}`;
+      quizPercentText.textContent = percent + '%';
+    }
+
+    function showStep(stepNumber) {
+      quizSteps.forEach(step => step.classList.remove('active'));
+      const nextStep = document.querySelector(`.quiz-step[data-step="${stepNumber}"]`);
+      if (nextStep) {
+        nextStep.classList.add('active');
+        currentStep = stepNumber;
+        updateQuizProgress(stepNumber);
+      }
+    }
+
+    function showResult() {
+      quizSteps.forEach(step => step.classList.remove('active'));
+      quizResult.classList.add('active');
+      quizStepText.textContent = 'Resultado pronto';
+      quizPercentText.textContent = '100%';
+      quizProgressFill.style.width = '100%';
+    }
+
+    function revealSalesPage() {
+      quizScreen.classList.add('hidden');
+      salesPage.classList.remove('hidden-sales');
+      document.body.classList.remove('quiz-active');
+
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        initRevealObserver();
+      }, 300);
+    }
+
+    quizOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        const next = option.dataset.next;
+
+        if (next === 'result') {
+          showResult();
+        } else {
+          showStep(next);
         }
       });
-    }, { threshold: 0.16 });
-    reveals.forEach(el => io.observe(el));
+    });
 
-    const stickyBar = document.getElementById('stickyBar');
-    const toggleSticky = () => {
+    showOfferBtn.addEventListener('click', revealSalesPage);
+
+    function initRevealObserver() {
+      const reveals = document.querySelectorAll('.reveal');
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.16 });
+
+      reveals.forEach(el => {
+        if (!el.classList.contains('visible')) {
+          io.observe(el);
+        }
+      });
+    }
+
+    function toggleSticky() {
       if (window.scrollY > 700) stickyBar.classList.add('show');
       else stickyBar.classList.remove('show');
-    };
-    toggleSticky();
+    }
+
     window.addEventListener('scroll', toggleSticky, { passive: true });
 
     document.getElementById('year').textContent = new Date().getFullYear();
@@ -965,5 +1516,196 @@
       });
     });
   </script>
+
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const quizScreen = document.getElementById('quizScreen');
+  const salesPage = document.getElementById('salesPage');
+  const quizSteps = document.querySelectorAll('.quiz-step');
+  const quizLoading = document.getElementById('quizLoading');
+  const quizResult = document.getElementById('quizResult');
+  const quizOptions = document.querySelectorAll('.quiz-option');
+  const quizProgressFill = document.getElementById('quizProgressFill');
+  const quizStepText = document.getElementById('quizStepText');
+  const quizPercentText = document.getElementById('quizPercentText');
+  const showOfferBtn = document.getElementById('showOfferBtn');
+  const stickyBar = document.getElementById('stickyBar');
+
+  const analysis1 = document.getElementById('analysis1');
+  const analysis2 = document.getElementById('analysis2');
+  const analysis3 = document.getElementById('analysis3');
+
+  const totalSteps = 4;
+  let alreadyOpened = false;
+
+  function updateQuizProgress(step) {
+    const percent = Math.round((step / totalSteps) * 100);
+    if (quizProgressFill) quizProgressFill.style.width = percent + '%';
+    if (quizStepText) quizStepText.textContent = `Pergunta ${step} de ${totalSteps}`;
+    if (quizPercentText) quizPercentText.textContent = `${percent}%`;
+  }
+
+  function hideAllQuizStates() {
+    quizSteps.forEach(step => step.classList.remove('active'));
+    if (quizLoading) quizLoading.classList.remove('active');
+    if (quizResult) quizResult.classList.remove('active');
+  }
+
+  function showStep(stepNumber) {
+    hideAllQuizStates();
+    const nextStep = document.querySelector(`.quiz-step[data-step="${stepNumber}"]`);
+    if (!nextStep) return;
+    nextStep.classList.add('active');
+    updateQuizProgress(Number(stepNumber));
+  }
+
+  function resetAnalysis() {
+    if (analysis1) analysis1.classList.remove('active');
+    if (analysis2) analysis2.classList.remove('active');
+    if (analysis3) analysis3.classList.remove('active');
+  }
+
+  function revealSalesPage() {
+    if (alreadyOpened) return;
+    alreadyOpened = true;
+
+    if (quizScreen) {
+      quizScreen.classList.add('hidden');
+      quizScreen.style.display = 'none';
+    }
+
+    if (salesPage) {
+      salesPage.classList.remove('hidden-sales');
+      salesPage.style.visibility = 'visible';
+      salesPage.style.opacity = '1';
+      salesPage.style.height = 'auto';
+      salesPage.style.overflow = 'visible';
+    }
+
+    document.body.classList.remove('quiz-active');
+    document.body.style.overflow = 'auto';
+
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+      initRevealObserver();
+      toggleSticky();
+    }, 100);
+  }
+
+  function showResult() {
+    hideAllQuizStates();
+
+    if (quizResult) {
+      quizResult.classList.add('active');
+    }
+
+    if (quizStepText) quizStepText.textContent = 'Resultado pronto';
+    if (quizPercentText) quizPercentText.textContent = '100%';
+    if (quizProgressFill) quizProgressFill.style.width = '100%';
+
+    setTimeout(() => {
+      revealSalesPage();
+    }, 1200);
+  }
+
+  function showLoading() {
+    hideAllQuizStates();
+
+    if (quizLoading) {
+      quizLoading.classList.add('active');
+    }
+
+    if (quizStepText) quizStepText.textContent = 'Analisando respostas';
+    if (quizPercentText) quizPercentText.textContent = '100%';
+    if (quizProgressFill) quizProgressFill.style.width = '100%';
+
+    resetAnalysis();
+
+    if (analysis1) analysis1.classList.add('active');
+
+    setTimeout(() => {
+      if (analysis2) analysis2.classList.add('active');
+    }, 500);
+
+    setTimeout(() => {
+      if (analysis3) analysis3.classList.add('active');
+    }, 1000);
+
+    setTimeout(() => {
+      showResult();
+    }, 1600);
+  }
+
+  quizOptions.forEach(option => {
+    option.addEventListener('click', () => {
+      const next = option.dataset.next;
+
+      if (next === 'loading') {
+        showLoading();
+        return;
+      }
+
+      if (next === 'result') {
+        showResult();
+        return;
+      }
+
+      showStep(next);
+    });
+  });
+
+  if (showOfferBtn) {
+    showOfferBtn.addEventListener('click', revealSalesPage);
+  }
+
+  function initRevealObserver() {
+    const reveals = document.querySelectorAll('.reveal');
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.16 });
+
+    reveals.forEach(el => {
+      if (!el.classList.contains('visible')) {
+        io.observe(el);
+      }
+    });
+  }
+
+  function toggleSticky() {
+    if (!stickyBar || !salesPage) return;
+
+    if (window.scrollY > 700 && !salesPage.classList.contains('hidden-sales')) {
+      stickyBar.classList.add('show');
+    } else {
+      stickyBar.classList.remove('show');
+    }
+  }
+
+  window.addEventListener('scroll', toggleSticky, { passive: true });
+
+  const yearEl = document.getElementById('year');
+  if (yearEl) {
+    yearEl.textContent = new Date().getFullYear();
+  }
+
+  document.querySelectorAll('details').forEach((detail) => {
+    detail.addEventListener('toggle', () => {
+      if (!detail.open) return;
+      document.querySelectorAll('details').forEach((other) => {
+        if (other !== detail) other.open = false;
+      });
+    });
+  });
+
+  updateQuizProgress(1);
+});
+</script>
+
 </body>
 </html>
